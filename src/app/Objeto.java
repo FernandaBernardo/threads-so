@@ -1,5 +1,7 @@
 package app;
 
-public interface Objeto {
+import java.util.ArrayList;
 
+public interface Objeto {
+	void acesso(ArrayList<String> palavras, int pos);
 }
