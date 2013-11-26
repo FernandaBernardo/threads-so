@@ -9,17 +9,35 @@ public class MainThreads {
 
 	public static void main(String[] args) throws FileNotFoundException {
 		threads = new Objeto[100];
-		 bd = new EstruturaBD();
+		bd = new EstruturaBD();
 		
 		for (int i = 0; i < threads.length; i++) {
-			preencherThread();
+			preencherThreads(i); 
+			//ARRUMAR
+			
 		}
 	}
 
-	private static void preencherThread() {
-		
-		int randomNumber = numeroAleatorio();
-		System.out.println(randomNumber);
+	private static void preencherThreads(int proporcao) {
+		for (int i = 0; i < proporcao; i++) {
+			loop(new Escritor());
+		}
+		for (int i = 0; i < 100-proporcao; i++) {
+			loop(new Leitor());
+		}
+	}
+
+	private static void loop(Objeto obj) {
+		int randomNumber;
+		boolean conseguiu;
+		conseguiu = false;
+		while (!conseguiu) {
+			randomNumber = numeroAleatorio();
+			if (threads[randomNumber] == null) {
+				threads[randomNumber] = obj;
+				conseguiu = true;
+			}
+		}
 	}
 
 	private static int numeroAleatorio() {
