@@ -13,9 +13,12 @@ public class MainThreads {
 		
 		for (int i = 0; i < threads.length; i++) {
 			preencherThreads(i); 
+			long tempoInicial = System.currentTimeMillis();
 			//ARRUMAR
 			
+			long tempoFinal = System.currentTimeMillis();
 		}
+		
 	}
 
 	private static void preencherThreads(int proporcao) {
