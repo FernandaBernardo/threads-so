@@ -2,38 +2,50 @@ package app;
 
 import java.io.FileNotFoundException;
 import java.util.Random;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class MainThreads {
-	static Objeto[] threads;
+	static Runnable[] threads;
 	static EstruturaBD bd;
-
+	private static ReentrantReadWriteLock theLock = new ReentrantReadWriteLock(true);
+	
 	public static void main(String[] args) throws FileNotFoundException {
-		threads = new Objeto[100];
 		bd = new EstruturaBD();
 		
-		for (int i = 0; i < threads.length; i++) {
-			preencherThreads(i); 
+		for (int i = 0; i < 100; i++) {
+			threads = new Runnable[100];
+			
+			preencherThreads(i);
+			startThread();
 			long tempoInicial = System.currentTimeMillis();
 			//ARRUMAR
 			
 			long tempoFinal = System.currentTimeMillis();
+			
 		}
-		
+	}
+
+	private static void startThread() {
+		Thread[] th = new Thread[100];
+		for (int i = 0; i < th.length; i++) {
+			th[i] = new Thread(threads[i]);
+			th[i].start();
+//			System.out.println(i);
+		}
 	}
 
 	private static void preencherThreads(int proporcao) {
 		for (int i = 0; i < proporcao; i++) {
-			loop(new Escritor());
+			loop(new Escritor(theLock));
 		}
 		for (int i = 0; i < 100-proporcao; i++) {
-			loop(new Leitor());
+			loop(new Leitor(theLock));
 		}
 	}
 
-	private static void loop(Objeto obj) {
+	private static void loop(Runnable obj) {
 		int randomNumber;
-		boolean conseguiu;
-		conseguiu = false;
+		boolean conseguiu = false;
 		while (!conseguiu) {
 			randomNumber = numeroAleatorio();
 			if (threads[randomNumber] == null) {
