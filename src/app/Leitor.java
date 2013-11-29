@@ -23,6 +23,11 @@ public class Leitor implements Runnable{
 		for (int i = 0; i < 100; i++) {
 			String string = bd.bd.get(na.gera(size));
 		}
+		try {
+			Thread.sleep(1);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		System.out.println(getI() + " The Reader has read the key with a value");
 		theLock.readLock().unlock();
 	}

@@ -23,6 +23,11 @@ public class Escritor implements Runnable{
 		for (int i = 0; i < 100; i++) {
 			bd.bd.set(na.gera(size), "MODIFICADO");
 		}
+		try {
+			Thread.sleep(1);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		System.out.println(getI() + " The Writer has written the key with the value");
 		theLock.writeLock().unlock();
 	}
