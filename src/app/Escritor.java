@@ -28,7 +28,7 @@ public class Escritor implements Runnable{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		System.out.println(getI() + " The Writer has written the key with the value");
+//		System.out.println(getI() + " The Writer has written the key with the value");
 		theLock.writeLock().unlock();
 	}
 

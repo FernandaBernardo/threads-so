@@ -28,7 +28,7 @@ public class Leitor implements Runnable{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		System.out.println(getI() + " The Reader has read the key with a value");
+//		System.out.println(getI() + " The Reader has read the key with a value");
 		theLock.readLock().unlock();
 	}
 

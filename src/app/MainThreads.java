@@ -13,15 +13,17 @@ public class MainThreads {
 		bd = new EstruturaBD();
 		
 		for (int i = 0; i < 100; i++) {
-			threads = new Runnable[100];
-			
-			preencherThreads(i);
-			startThread();
-			long tempoInicial = System.currentTimeMillis();
-			//ARRUMAR
-			
-			long tempoFinal = System.currentTimeMillis();
-			
+			int media = 0;
+			for (int j = 0; j < 50; j++) {
+				threads = new Runnable[100];
+				preencherThreads(i);
+				long tempoInicial = System.currentTimeMillis();
+				startThread();
+				long tempoFinal = System.currentTimeMillis();
+				media += tempoFinal - tempoInicial;
+			}
+			media /= 50;
+			System.out.println("Média - " + i + " escritores e " + (100-i) + " leitores - " +media);
 		}
 	}
 	
@@ -35,7 +37,7 @@ public class MainThreads {
 		for (int i = 0; i < th.length; i++) {
 			th[i].join(); 
 		}
-		System.out.println();
+//		System.out.println();
 	}
 	
 	private static void preencherThreads(int proporcao) throws FileNotFoundException {
