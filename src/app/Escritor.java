@@ -1,25 +1,37 @@
 package app;
 
+import java.io.FileNotFoundException;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class Escritor implements Runnable{
 	private ReentrantReadWriteLock theLock;
-
-	public Escritor(ReentrantReadWriteLock theLock) {
+	private NumeroAleatorio na;
+	private EstruturaBD bd;
+	private int i;
+	
+	public Escritor(ReentrantReadWriteLock theLock, EstruturaBD bd, int i) throws FileNotFoundException {
 		this.theLock = theLock;
+		this.bd = bd;
+		this.na = new NumeroAleatorio();
+		this.setI(i);
 	}
 	
 	@Override
 	public void run() {
-		try {
-			theLock.writeLock().lock();
-			System.out.println("The Writer has written the key with the value");
-//			try {
-//				Thread.sleep(1);
-//			} catch (InterruptedException e) {
-//			}
-		} finally {
-			theLock.writeLock().unlock();
+		theLock.writeLock().lock();
+		int size = bd.bd.size();
+		for (int i = 0; i < 100; i++) {
+			bd.bd.set(na.gera(size), "MODIFICADO");
 		}
+		System.out.println(getI() + " The Writer has written the key with the value");
+		theLock.writeLock().unlock();
+	}
+
+	public int getI() {
+		return i;
+	}
+
+	public void setI(int i) {
+		this.i = i;
 	}
 }
