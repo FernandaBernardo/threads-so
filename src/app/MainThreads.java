@@ -15,24 +15,26 @@ public class MainThreads {
 	public static void main(String[] args) throws FileNotFoundException, InterruptedException {
 		long inicioPrograma = System.currentTimeMillis();
 		controlador = new LeitorEscritor();
-
-		EstruturaBD.inicializa();
-		for (int i = 0; i < todasProporcoes; i++) {
-			int media = 0;
-			for (int j = 0; j < vezesCadaProp; j++) {
-				numAleatorio = new NumeroAleatorio();
-				newThread(i);
-				long tempoInicial = System.currentTimeMillis();
-				startThread();
-				joinThread();
-				long tempoFinal = System.currentTimeMillis();
-				media += tempoFinal - tempoInicial;
+		
+		for (int k = 0; k < 2; k++) {
+			EstruturaBD.inicializa();
+			for (int i = 0; i < todasProporcoes; i++) {
+				int media = 0;
+				for (int j = 0; j < vezesCadaProp; j++) {
+					numAleatorio = new NumeroAleatorio();
+					newThread(i, k);
+					long tempoInicial = System.currentTimeMillis();
+					startThread();
+					joinThread();
+					long tempoFinal = System.currentTimeMillis();
+					media += tempoFinal - tempoInicial;
+				}
+				media /= vezesCadaProp;
+				System.out.println("Média - " + i + " escritores e " + (100 - i) + " leitores - " + media);
 			}
-			media /= vezesCadaProp;
-			System.out.println("Média - " + i + " escritores e " + (100 - i) + " leitores - " + media);
+			long fimPrograma = System.currentTimeMillis();
+			System.out.println("Demorou " + ((fimPrograma - inicioPrograma) / 60000) + " min");
 		}
-		long fimPrograma = System.currentTimeMillis();
-		System.out.println("Demorou " + ((fimPrograma - inicioPrograma) / 60000) + " min");
 	}
 
 	private static void startThread() {
@@ -41,13 +43,13 @@ public class MainThreads {
 		}
 	}
 
-	private static void newThread(int proporcao) throws FileNotFoundException {
+	private static void newThread(int proporcao, int implementacao) throws FileNotFoundException {
 		threads = new Thread[100];
 		for (int i = 0; i < proporcao; i++) {
-			loop(new Escritor(theLock, 0, controlador));
+			loop(new Escritor(0, controlador, 1));
 		}
 		for (int i = 0; i < 100 - proporcao; i++) {
-			loop(new Leitor(theLock, 0, controlador));
+			loop(new Leitor(0, controlador, 1));
 		}
 	}
 
