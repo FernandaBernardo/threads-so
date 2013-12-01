@@ -6,6 +6,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public class MainThreads {
 	private static ReentrantReadWriteLock theLock = new ReentrantReadWriteLock(true);
 	private static NumeroAleatorio numAleatorio;
+	private static LeitorEscritor controlador;
 
 	private static int todasProporcoes = 101;
 	private static int vezesCadaProp = 50;
@@ -13,6 +14,7 @@ public class MainThreads {
 
 	public static void main(String[] args) throws FileNotFoundException, InterruptedException {
 		long inicioPrograma = System.currentTimeMillis();
+		controlador = new LeitorEscritor();
 
 		EstruturaBD.inicializa();
 		for (int i = 0; i < todasProporcoes; i++) {
@@ -27,12 +29,10 @@ public class MainThreads {
 				media += tempoFinal - tempoInicial;
 			}
 			media /= vezesCadaProp;
-			System.out.println("Média - " + i + " escritores e " + (100 - i)
-					+ " leitores - " + media);
+			System.out.println("Média - " + i + " escritores e " + (100 - i) + " leitores - " + media);
 		}
 		long fimPrograma = System.currentTimeMillis();
-		System.out.println("Demorou "
-				+ ((fimPrograma - inicioPrograma) / 60000) + "min");
+		System.out.println("Demorou " + ((fimPrograma - inicioPrograma) / 60000) + " min");
 	}
 
 	private static void startThread() {
@@ -44,10 +44,10 @@ public class MainThreads {
 	private static void newThread(int proporcao) throws FileNotFoundException {
 		threads = new Thread[100];
 		for (int i = 0; i < proporcao; i++) {
-			loop(new Escritor(theLock, 0));
+			loop(new Escritor(theLock, 0, controlador));
 		}
 		for (int i = 0; i < 100 - proporcao; i++) {
-			loop(new Leitor(theLock, 0));
+			loop(new Leitor(theLock, 0, controlador));
 		}
 	}
 

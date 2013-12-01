@@ -32,6 +32,5 @@ public class EstruturaBD {
 		for (int i = 0; i < 100; i++) {
 			bd.set(numAleatorio.gera(size), "MODIFICADO");
 		}
-
 	}
 }
