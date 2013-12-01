@@ -9,39 +9,38 @@ public class Leitor implements Runnable{
 	private LeitorEscritor controlador;
 	private int implementacao;
 
-	public Leitor(int i, LeitorEscritor controlador, int implementacao) throws FileNotFoundException {
+	public Leitor(int i, LeitorEscritor controlador, ReentrantReadWriteLock theLock, int implementacao) throws FileNotFoundException {
 		this.controlador = controlador;
 		this.implementacao = implementacao;
 		this.setI(i);
-		theLock = null;
-	}
-	
-	public Leitor(int i, ReentrantReadWriteLock theLock, int implementacao) {
 		this.theLock = theLock;
-		this.controlador = null;
-		this.setI(i);
-		this.implementacao = implementacao;
 	}
 	
 	@Override
 	public void run() {
-		if(implementacao == 1) leitorEescritor(implementacao);
-		else if(implementacao == 2) leitorEescritor(implementacao);
+		if(implementacao == 1) leitorEescritor();
+		else if(implementacao == 2) naoLeitorEescritor();
 	}
 
-	private void leitorEescritor(int implementacao) {
-		if(implementacao == 1) controlador.comecarLeitura();
-		else if (implementacao == 2) theLock.readLock().lock();
-		
+	private void naoLeitorEescritor() {
+		theLock.readLock().lock();
+		bdEsleep();
+		theLock.readLock().unlock();
+	}
+
+	private void leitorEescritor() {
+		controlador.comecarLeitura();
+		bdEsleep();
+		controlador.pararLeitura();
+	}
+
+	private void bdEsleep() {
 		EstruturaBD.acessosAleatoriosLeitor();
 		try {
 			Thread.sleep(1);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		
-		if (implementacao == 1) controlador.pararLeitura();
-		else if(implementacao == 2) theLock.readLock().unlock();
 	}
 
 	public int getI() {

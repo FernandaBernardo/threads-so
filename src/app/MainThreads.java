@@ -46,10 +46,10 @@ public class MainThreads {
 	private static void newThread(int proporcao, int implementacao) throws FileNotFoundException {
 		threads = new Thread[100];
 		for (int i = 0; i < proporcao; i++) {
-			loop(new Escritor(0, controlador, 1));
+			loop(new Escritor(0, controlador, theLock, 1));
 		}
 		for (int i = 0; i < 100 - proporcao; i++) {
-			loop(new Leitor(0, controlador, 1));
+			loop(new Leitor(0, controlador, theLock, 1));
 		}
 	}
 
