@@ -16,7 +16,7 @@ public class MainThreads {
 		theLock = new ReentrantReadWriteLock(true);
 		controlador = new LeitorEscritor();
 		
-		for (int k = 0; k < 2; k++) { //fazer os 2 tipos de implementação
+		for (int k = 1; k < 3; k++) { //fazer os 2 tipos de implementação
 			long inicioPrograma = System.currentTimeMillis();
 			EstruturaBD.inicializa();
 			for (int i = 0; i < todasProporcoes; i++) { //fazer todas as proporções de leitores e escritores
@@ -42,10 +42,10 @@ public class MainThreads {
 		threads = new Thread[100]; //inicializando array de threads
 		/*gerando objetos da proporção em lugares aleatórios*/
 		for (int i = 0; i < proporcao; i++) { 
-			loop(new Escritor(0, controlador, theLock, 1));
+			loop(new Escritor(0, controlador, theLock, implementacao));
 		}
 		for (int i = 0; i < 100 - proporcao; i++) {
-			loop(new Leitor(0, controlador, theLock, 1));
+			loop(new Leitor(0, controlador, theLock, implementacao));
 		}
 	}
 	
