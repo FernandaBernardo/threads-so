@@ -5,14 +5,12 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class Leitor implements Runnable{
 	private ReentrantReadWriteLock theLock;
-	private int i;
 	private LeitorEscritor controlador;
 	private int implementacao;
 
 	public Leitor(int i, LeitorEscritor controlador, ReentrantReadWriteLock theLock, int implementacao) throws FileNotFoundException {
 		this.controlador = controlador;
 		this.implementacao = implementacao;
-		this.setI(i);
 		this.theLock = theLock;
 	}
 	
@@ -41,13 +39,5 @@ public class Leitor implements Runnable{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public int getI() {
-		return i;
-	}
-
-	public void setI(int i) {
-		this.i = i;
 	}
 }

@@ -6,6 +6,7 @@ import java.util.Random;
 
 public class NumeroAleatorio {
 	List<Integer> numeros;
+	Random r = new Random();
 	
 	public NumeroAleatorio() {
 		numeros =  new ArrayList<Integer>();
@@ -19,13 +20,10 @@ public class NumeroAleatorio {
 	}
 
 	int gera() {
-		Random r = new Random();
-		int aux = numeros.remove(r.nextInt(numeros.size()));
-		return aux;
+		return numeros.remove(r.nextInt(numeros.size()));
 	}
 	
 	int gera(int size) {
-		Random r = new Random();
 		return r.nextInt(size);
 	}
 }

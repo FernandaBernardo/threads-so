@@ -13,11 +13,13 @@ class LeitorEscritor {
 	}
 
 	synchronized void comecarLeitura() {
-		while (!condicaoLeitura())
+		while (!condicaoLeitura()) {
 			try {
 				wait();
-			} catch (InterruptedException ex) {
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
+		}
 		leitoresAtivos++;
 	}
 
@@ -27,11 +29,13 @@ class LeitorEscritor {
 	}
 
 	synchronized void comecarEscrita() {
-		while (!condicaoEscrita())
+		while (!condicaoEscrita()) {
 			try {
 				wait();
-			} catch (InterruptedException ex) {
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
+		}
 		escritorPresente = true;
 	}
 
