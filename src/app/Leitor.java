@@ -1,29 +1,33 @@
 package app;
 
 import java.io.FileNotFoundException;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class Leitor implements Runnable{
-	private ReentrantReadWriteLock theLock;
+	private Lock lock;
 	private LeitorEscritor controlador;
 	private int implementacao;
 
-	public Leitor(int i, LeitorEscritor controlador, ReentrantReadWriteLock theLock, int implementacao) throws FileNotFoundException {
+	public Leitor(int i, LeitorEscritor controlador, Lock lock, int implementacao) throws FileNotFoundException {
 		this.controlador = controlador;
 		this.implementacao = implementacao;
-		this.theLock = theLock;
+		this.lock = lock;
 	}
 	
 	@Override
 	public void run() {
 		if(implementacao == 1) leitorEescritor();
-		else if(implementacao == 2) naoLeitorEescritor();
+		else if(implementacao == 2)
+			try {
+				naoLeitorEescritor();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 	}
 
-	private void naoLeitorEescritor() {
-		theLock.readLock().lock();
+	private void naoLeitorEescritor() throws InterruptedException {
+		lock.lock();
 		bdEsleep();
-		theLock.readLock().unlock();
+		lock.unlock();
 	}
 
 	private void leitorEescritor() {

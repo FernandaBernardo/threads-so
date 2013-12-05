@@ -1,19 +1,18 @@
 package app;
 
 import java.io.FileNotFoundException;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class MainThreads {
-	private static ReentrantReadWriteLock theLock;
+	private static Lock lock;
 	private static NumeroAleatorio numAleatorio;
 	private static LeitorEscritor controlador;
-
+	
 	private static int todasProporcoes = 101;
 	private static int vezesCadaProp = 50;
 	private static Thread[] threads;
-
+	
 	public static void main(String[] args) throws FileNotFoundException, InterruptedException {
-		theLock = new ReentrantReadWriteLock(true);
+		lock = new Lock();
 		controlador = new LeitorEscritor();
 		
 		for (int k = 0; k < 2; k++) { //fazer os 2 tipos de implementação
@@ -38,15 +37,15 @@ public class MainThreads {
 			System.out.println("Demorou " + ((fimPrograma - inicioPrograma) / 60000) + " min");
 		}
 	}
-
+	
 	private static void newThreads(int proporcao, int implementacao) throws FileNotFoundException {
 		threads = new Thread[100]; //inicializando array de threads
 		/*gerando objetos da proporção em lugares aleatórios*/
 		for (int i = 0; i < proporcao; i++) { 
-			loop(new Escritor(0, controlador, theLock, implementacao));
+			loop(new Escritor(0, controlador, lock, implementacao));
 		}
 		for (int i = 0; i < 100 - proporcao; i++) {
-			loop(new Leitor(0, controlador, theLock, implementacao));
+			loop(new Leitor(0, controlador, lock, implementacao));
 		}
 	}
 	
@@ -56,14 +55,14 @@ public class MainThreads {
 			threads[i].start();
 		}
 	}
-
+	
 	/*fazer com que o main espere as threads*/
 	private static void joinThreads() throws InterruptedException { 
 		for (int i = 0; i < threads.length; i++) {
 			threads[i].join();
 		}
 	}
-
+	
 	/*procurando lugar aleatório para colocar o novo objeto*/
 	private static void loop(Runnable obj) { 
 		int randomNumber = numAleatorio.gera();
