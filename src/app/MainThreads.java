@@ -16,14 +16,15 @@ public class MainThreads {
 		theLock = new ReentrantReadWriteLock(true);
 		controlador = new LeitorEscritor();
 		
-		for (int k = 1; k < 3; k++) { //fazer os 2 tipos de implementação
+		for (int k = 0; k < 2; k++) { //fazer os 2 tipos de implementação
 			long inicioPrograma = System.currentTimeMillis();
 			EstruturaBD.inicializa();
+			System.out.println("Implementação: " + (k+1));
 			for (int i = 0; i < todasProporcoes; i++) { //fazer todas as proporções de leitores e escritores
 				int media = 0;
 				for (int j = 0; j < vezesCadaProp; j++) { //fazer 50 vezes cada uma das proporções
 					numAleatorio = new NumeroAleatorio(); //gerando arranjo com números de 1 a 100 para pegar aleatórios
-					newThreads(i, k);
+					newThreads(i, k+1);
 					long tempoInicial = System.currentTimeMillis();
 					startThreads();
 					joinThreads();
