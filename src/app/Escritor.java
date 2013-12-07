@@ -12,7 +12,8 @@ public class Escritor implements Runnable{
 		this.implementacao = implementacao;
 		this.lock = lock;
 	}
-	
+
+	/*coloca para rodar a implementação desejada*/
 	@Override
 	public void run() {
 		if(implementacao == 1) leitorEescritor();
@@ -24,18 +25,21 @@ public class Escritor implements Runnable{
 			}
 	}
 
+	/*implementação sem leitor/escritor*/
 	private void naoLeitorEescritor() throws InterruptedException {
-		lock.lock();
+		lock.bloqueia();
 		bdEsleep();
-		lock.unlock();
+		lock.desbloqueia();
 	}
 
+	/*implementação com leitor/escritor*/
 	private void leitorEescritor() {
 		controlador.comecarEscrita();
 		bdEsleep();
 		controlador.pararEscrita();
 	}
 
+	/*faz acesso aleatório no bd e coloca a thread pra dormir*/
 	private void bdEsleep() {
 		EstruturaBD.acessosAleatoriosEscritor();
 		try {
